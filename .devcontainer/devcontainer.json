@@ -27,7 +27,8 @@
         "github.vscode-github-actions",
         "GitHub.copilot",
         "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "vitest.explorer"
       ]
     }
   },

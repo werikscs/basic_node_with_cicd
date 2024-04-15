@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "vitest",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",
     "start:dev": "npx nodemon",
@@ -26,7 +27,8 @@
     "nodemon": "^3.1.0",
     "prettier": "^3.2.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vitest": "^1.5.0"
   },
   "dependencies": {
     "express": "^4.19.2"
