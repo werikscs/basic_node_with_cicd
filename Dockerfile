@@ -14,6 +14,5 @@ WORKDIR /app
 EXPOSE 3000
 COPY --from=builder /app/build ./
 COPY package*.json ./
-RUN npm pkg delete scripts.prepare
 RUN npm install --omit=dev
 CMD ["npm","run","start:prod"]
