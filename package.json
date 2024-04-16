@@ -8,6 +8,7 @@
     "lint": "eslint src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",
     "start:dev": "npx nodemon",
+    "start:prod": "node build/index.js",
     "build": "rimraf ./build && tsc",
     "start": "npm run build && node build/index.js"
   },

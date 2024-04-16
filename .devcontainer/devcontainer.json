@@ -5,10 +5,10 @@
   },
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
-			"installZsh": true,
+      "installZsh": true,
       "installOhMyZsh": true,
-			"installOhMyZshConfig": true,
-			"configureZshAsDefaultShell": true,
+      "installOhMyZshConfig": true,
+      "configureZshAsDefaultShell": true,
       "upgradePackages": true,
       "username": "node",
       "userUid": "automatic",
@@ -16,7 +16,7 @@
     },
     "ghcr.io/devcontainers-contrib/features/zsh-plugins:0": {
       "plugins": "F-Sy-H zsh-completions zsh-autosuggestions",
-			"omzPlugins": "https://github.com/z-shell/F-Sy-H https://github.com/zsh-users/zsh-completions.git https://github.com/zsh-users/zsh-autosuggestions.git"
+      "omzPlugins": "https://github.com/z-shell/F-Sy-H https://github.com/zsh-users/zsh-completions.git https://github.com/zsh-users/zsh-autosuggestions.git"
     },
     "ghcr.io/stuartleeks/dev-container-features/shell-history:0": {}
   },
@@ -28,7 +28,8 @@
         "GitHub.copilot",
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
-        "vitest.explorer"
+        "vitest.explorer",
+        "ms-azuretools.vscode-docker"
       ]
     }
   },
