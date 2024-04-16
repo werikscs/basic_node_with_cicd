@@ -46,4 +46,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/weriks/basic_cicd:1
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/basic_cicd:1
