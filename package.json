@@ -8,8 +8,8 @@
     "lint": "eslint src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",
     "start:dev": "npx nodemon",
-    "start:prod": "node build/index.js",
-    "build": "rm -rf ./build && tsc",
+    "start:prod": "node index.js",
+    "build": "rm -rf ./build && tsc -p tsconfig.prod.json",
     "start": "npm run build && node build/index.js"
   },
   "keywords": [],
