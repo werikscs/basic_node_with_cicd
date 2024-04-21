@@ -64,16 +64,13 @@ jobs:
       - name: Terraform version
         run: terraform --version
 
-      - name: Check dir
-        run: pwd
-
       - name: Create main.tf
         run: |
           mv main.model.tf main.tf
           sed -i "s|<BACKEND_HTTP_ADDRESS>|${{ secrets.BACKEND_HTTP_ADDRESS }}|g" main.tf
 
-      - name: Check file
-        run: cat main.tf
-
       - name: Terraform init
         run: terraform init
+
+      - name: Terraform validate
+        run: terraform validate
