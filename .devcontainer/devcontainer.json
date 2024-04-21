@@ -1,5 +1,5 @@
 {
-  "name": "dev-digit-frontend",
+  "name": "basic_node_with_cicd",
   "build": {
     "dockerfile": "Dockerfile"
   },
@@ -29,7 +29,9 @@
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
         "vitest.explorer",
-        "ms-azuretools.vscode-docker"
+        "ms-azuretools.vscode-docker",
+        "HashiCorp.terraform",
+        "redhat.ansible"
       ]
     }
   },

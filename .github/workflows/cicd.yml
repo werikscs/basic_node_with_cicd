@@ -47,7 +47,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/basic_cicd:latest
 
-  deploy:
+  create_infra:
     needs: build_docker_image
     runs-on: ubuntu-latest
 
@@ -59,3 +59,17 @@ jobs:
 
       - name: Terraform version
         run: terraform --version
+
+      - name: Check dir
+        run: pwd
+
+      - name: Create main.tf
+        run: |
+          mv main.model.tf main.tf
+          sed -i "s|<BACKEND_HTTP_ADDRESS>|${{ secrets.BACKEND_HTTP_ADDRESS }}|g" main.tf
+
+      - name: Check file
+        run: cat main.tf
+
+      - name: Terraform init
+        run: terraform init
