@@ -81,5 +81,23 @@ jobs:
       - name: Terraform validate
         run: terraform validate
 
+      - name: Create terraform.tfvars
+        run: |
+          cat >terraform.tfvars<<EOL
+          PROVIDER_TENANCY_OCID="${{ secrets.PROVIDER_TENANCY_OCID }}"
+          PROVIDER_USER_OCID="${{ secrets.PROVIDER_USER_OCID }}"
+          PROVIDER_PRIVATE_KEY="${{ secrets.PROVIDER_PRIVATE_KEY }}"
+          PROVIDER_FINGERPRINT="${{ secrets.PROVIDER_FINGERPRINT }}"
+          PROVIDER_REGION="${{ secrets.PROVIDER_REGION }}"
+          COMPUTE_COMPARTMENT_ID="${{ secrets.COMPUTE_COMPARTMENT_ID }}"
+          COMPUTE_VM_SHAPE="VM.Standard.E2.1.Micro"
+          COMPUTE_SOURCE_ID="${{ secrets.COMPUTE_SOURCE_ID }}"
+          COMPUTE_SOURCE_TYPE="image"
+          COMPUTE_DISPLAY_NAME="ubuntu-with-bucket"
+          COMPUTE_SUBNET_ID="${{ secrets.COMPUTE_SUBNET_ID }}"
+          COMPUTE_INSTANCE="ubuntu-instance"
+          COMPUTE_SSH_AUTHORIZED_KEY="${{ secrets.COMPUTE_SSH_AUTHORIZED_KEY }}"
+          EOL
+
       - name: Terraform plan
         run: terraform plan
