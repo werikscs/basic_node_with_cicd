@@ -86,7 +86,7 @@ jobs:
           cat >terraform.tfvars<<EOL
           PROVIDER_TENANCY_OCID="${{ secrets.PROVIDER_TENANCY_OCID }}"
           PROVIDER_USER_OCID="${{ secrets.PROVIDER_USER_OCID }}"
-          PROVIDER_PRIVATE_KEY=$(echo "${{ secrets.PROVIDER_PRIVATE_KEY }}" | awk '{printf "%s\\n", $0}')
+          PROVIDER_PRIVATE_KEY="${{ secrets.PROVIDER_PRIVATE_KEY }}"
           PROVIDER_FINGERPRINT="${{ secrets.PROVIDER_FINGERPRINT }}"
           PROVIDER_REGION="${{ secrets.PROVIDER_REGION }}"
           COMPUTE_COMPARTMENT_ID="${{ secrets.COMPUTE_COMPARTMENT_ID }}"
