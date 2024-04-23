@@ -77,12 +77,6 @@ jobs:
           mv main.model.tf main.tf
           sed -i "s|<BACKEND_HTTP_ADDRESS>|${{ secrets.BACKEND_HTTP_ADDRESS }}|g" main.tf
 
-      - name: Terraform Init
-        run: terraform init
-
-      - name: Terraform validate
-        run: terraform validate
-
       - name: Create terraform.tfvars
         run: |
           cat >terraform.tfvars<<EOL
@@ -100,6 +94,12 @@ jobs:
           COMPUTE_INSTANCE="ubuntu-instance"
           COMPUTE_SSH_AUTHORIZED_KEY="${{ secrets.COMPUTE_SSH_AUTHORIZED_KEY }}"
           EOL
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
 
       - name: Terraform Plan
         run: terraform plan
