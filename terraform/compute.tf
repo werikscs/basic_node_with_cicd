@@ -16,7 +16,7 @@ resource "oci_core_instance" "ubuntu_instance" {
   }
 
   metadata = {
-    ssh_authorized_keys = file(var.COMPUTE_SSH_AUTHORIZED_KEYS_PATH)
+    ssh_authorized_keys = file(var.COMPUTE_SSH_AUTHORIZED_KEY)
   }
 
   preserve_boot_volume = false
