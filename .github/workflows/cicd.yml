@@ -66,6 +66,8 @@ jobs:
 
       - name: HashiCorp - Setup Terraform
         uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
 
       - name: Terraform version
         run: terraform --version
@@ -75,7 +77,7 @@ jobs:
           mv main.model.tf main.tf
           sed -i "s|<BACKEND_HTTP_ADDRESS>|${{ secrets.BACKEND_HTTP_ADDRESS }}|g" main.tf
 
-      - name: Terraform init
+      - name: Terraform Init
         run: terraform init
 
       - name: Terraform validate
@@ -99,5 +101,5 @@ jobs:
           COMPUTE_SSH_AUTHORIZED_KEY="${{ secrets.COMPUTE_SSH_AUTHORIZED_KEY }}"
           EOL
 
-      - name: Terraform Apply
-        run: terraform apply
+      - name: Terraform Plan
+        run: terraform plan
