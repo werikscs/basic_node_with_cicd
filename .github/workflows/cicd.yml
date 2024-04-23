@@ -99,6 +99,5 @@ jobs:
           COMPUTE_SSH_AUTHORIZED_KEY="${{ secrets.COMPUTE_SSH_AUTHORIZED_KEY }}"
           EOL
 
-
-      - name: Terraform plan
-        run: terraform plan
+      - name: Terraform Apply
+        run: terraform apply
