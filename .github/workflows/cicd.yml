@@ -56,7 +56,6 @@ jobs:
   create_infra:
     needs: build_docker_image
     runs-on: ubuntu-latest
-    timeout-minutes: 10
 
     defaults:
       run:
@@ -105,10 +104,7 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        if: github.event_name == 'pull_request'
         run: terraform plan
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/development' && github.event_name == 'push'
-        # printa uma mensagem de teste
-        run: echo "Terraform Apply"
+        run: terraform apply -auto-approve
