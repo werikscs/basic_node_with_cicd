@@ -1,17 +1,5 @@
-output "name-of-first-availability-domain" {
-  value = data.oci_identity_availability_domains.ads.availability_domains[0].name
-}
-
 output "instance-name" {
   value = oci_core_instance.ubuntu_instance.display_name
-}
-
-output "instance-OCID" {
-  value = oci_core_instance.ubuntu_instance.id
-}
-
-output "instance-region" {
-  value = oci_core_instance.ubuntu_instance.region
 }
 
 output "instance-shape" {
@@ -32,4 +20,8 @@ output "instance-memory-in-GBs" {
 
 output "time-created" {
   value = oci_core_instance.ubuntu_instance.time_created
+}
+
+output "public-ip-for-compute-instance" {
+  value = oci_core_instance.ubuntu_instance.public_ip
 }
