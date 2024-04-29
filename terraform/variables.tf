@@ -8,8 +8,8 @@ variable "PROVIDER_USER_OCID" {
   type        = string
 }
 
-variable "PROVIDER_PRIVATE_KEY" {
-  description = "OCI private key"
+variable "PROVIDER_PRIVATE_KEY_FILE_PATH" {
+  description = "OCI private key file path"
 }
 
 variable "PROVIDER_FINGERPRINT" {

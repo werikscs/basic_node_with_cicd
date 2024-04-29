@@ -15,7 +15,7 @@ terraform {
 provider "oci" {
   tenancy_ocid     = var.PROVIDER_TENANCY_OCID
   user_ocid        = var.PROVIDER_USER_OCID
-  private_key      = var.PROVIDER_PRIVATE_KEY
+  private_key_path = var.PROVIDER_PRIVATE_KEY_FILE_PATH
   fingerprint      = var.PROVIDER_FINGERPRINT
   region           = var.PROVIDER_REGION
 }
