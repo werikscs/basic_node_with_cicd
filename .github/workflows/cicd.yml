@@ -126,7 +126,3 @@ jobs:
 
       - name: Print IP
         run: echo "${{ needs.create_infra.outputs.public_ip }}"
-
-      - name: Echo public IP
-        run: |
-          echo "${{ $PUBLIC_IP_INSTANCE }}"
