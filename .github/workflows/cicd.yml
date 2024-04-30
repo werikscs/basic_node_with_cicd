@@ -106,3 +106,10 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
+
+      - name: Export Terraform Output
+        id: tf
+        run: |
+          echo "PUBLIC_IP_INSTANCE=$(terraform output -raw public-ip-compute-instance)" >> $GITHUB_OUTPUT
+
+      - run: echo "${{ steps.tf.outputs.PUBLIC_IP_INSTANCE }}"

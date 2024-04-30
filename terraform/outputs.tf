@@ -22,6 +22,6 @@ output "time-created" {
   value = oci_core_instance.ubuntu_instance.time_created
 }
 
-output "public-ip-for-compute-instance" {
+output "public-ip-compute-instance" {
   value = oci_core_instance.ubuntu_instance.public_ip
 }
