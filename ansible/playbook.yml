@@ -1,0 +1,10 @@
+---
+- name: Update apt cache
+  hosts: all
+  remote_user: ubuntu
+  become: true
+
+  tasks:
+    - name: Update apt cache
+      ansible.posix.apt:
+        update_cache: true

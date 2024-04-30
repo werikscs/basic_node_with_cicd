@@ -60,7 +60,7 @@ jobs:
     defaults:
       run:
         working-directory: terraform
-        
+
     steps:
       - uses: actions/checkout@v3
 
@@ -113,7 +113,7 @@ jobs:
         id: tf
         run: |
           echo "tf_output_public_ip=$(terraform output -raw public-ip-compute-instance)" >> $GITHUB_OUTPUT
-    
+
     outputs:
       instance_public_ip: ${{ steps.tf.outputs.tf_output_public_ip }}
 
@@ -123,6 +123,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
 
-      - name: Print IP
-        run: echo "${{ needs.create_infra.outputs.instance_public_ip }}"
+      - name: Install Ansible
+        run: pip install ansible
+
+      - name: Create SSH Authorized Key File
+        run: echo "${{ secrets.COMPUTE_SSH_AUTHORIZED_KEY }}" > compute_ssh_authorized_key.pub
+
+      - name: Run Ansible Playbook
+        run: ansible-playbook -i ${{ needs.create_infra.outputs.instance_public_ip }}, --user ubuntu --compute_ssh_authorized_key.pub ./ansible/playbook.yml
