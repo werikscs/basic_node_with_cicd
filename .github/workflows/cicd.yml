@@ -112,4 +112,12 @@ jobs:
         run: |
           echo "PUBLIC_IP_INSTANCE=$(terraform output -raw public-ip-compute-instance)" >> $GITHUB_OUTPUT
 
-      - run: echo "${{ steps.tf.outputs.PUBLIC_IP_INSTANCE }}"
+  config_vm_with_ansible:
+    needs: create_infra
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Echo public IP
+        run: echo "${{ steps.tf.outputs.PUBLIC_IP_INSTANCE }}"
