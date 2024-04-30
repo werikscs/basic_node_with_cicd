@@ -112,10 +112,10 @@ jobs:
       - name: Export Terraform Output
         id: tf
         run: |
-          echo "instance_public_ip=$(terraform output -raw public-ip-compute-instance)" >> $GITHUB_OUTPUT
+          echo "tf_output_public_ip=$(terraform output -raw public-ip-compute-instance)" >> $GITHUB_OUTPUT
     
     outputs:
-      public_ip: ${{ steps.tf.outputs.instance_public_ip }}
+      instance_public_ip: ${{ steps.tf.outputs.tf_output_public_ip }}
 
   config_vm_with_ansible:
     needs: create_infra
