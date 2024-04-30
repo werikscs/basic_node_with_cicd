@@ -126,4 +126,4 @@ jobs:
 
       - name: Echo public IP
         run: |
-          echo $PUBLIC_IP_INSTANCE
+          echo "$PUBLIC_IP_INSTANCE"
