@@ -131,7 +131,8 @@ jobs:
         run: pip install ansible
 
       - name: Create SSH Authorized Key File
-        run: echo "${{ secrets.COMPUTE_SSH_AUTHORIZED_KEY }}" > compute_ssh_authorized_key.pub
+        run: |
+          echo "${{ secrets.COMPUTE_SSH_AUTHORIZED_KEY }}" > compute_ssh_authorized_key.pem
 
       - name: Run Ansible Playbook
         run: ansible-playbook -i ${{ needs.create_infra.outputs.instance_public_ip }}, --user ubuntu --compute_ssh_authorized_key.pub ./ansible/playbook.yml
