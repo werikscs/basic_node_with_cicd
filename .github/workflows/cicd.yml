@@ -135,4 +135,4 @@ jobs:
           echo "${{ secrets.COMPUTE_SSH_AUTHORIZED_KEY }}" > compute_ssh_authorized_key.pem
 
       - name: Run Ansible Playbook
-        run: ansible-playbook -i ${{ needs.create_infra.outputs.instance_public_ip }}, --user ubuntu --compute_ssh_authorized_key.pub ./ansible/playbook.yml
+        run: ansible-playbook -i ${{ needs.create_infra.outputs.instance_public_ip }}, --user ubuntu --compute_ssh_authorized_key.pem ./ansible/playbook.yml
