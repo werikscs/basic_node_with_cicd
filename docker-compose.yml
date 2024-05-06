@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  community-spells:
+    image: weriks/basic_cicd:latest
+    restart: always
+    ports:
+      - 80:3000
+    env_file:
+      - .env
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge

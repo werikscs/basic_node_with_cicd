@@ -1,0 +1,142 @@
+name: CICD Pipeline
+
+on:
+  push:
+    branches:
+      - 'development'
+  pull_request:
+    branches:
+      - 'development'
+
+jobs:
+  run_tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # - name: Use Node.js 20
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 20.x
+
+      # - name: Installing libs
+      #   run: npm install
+
+      # - name: Running tests
+      #   run: npm run test
+
+  build_docker_image:
+    needs: run_tests
+
+    if: github.ref == 'refs/heads/development'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # - name: Login to Docker Hub
+      #   uses: docker/login-action@v3
+      #   with:
+      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # - name: Set up Docker Buildx (DOCKER CLI plugin)
+      #   uses: docker/setup-buildx-action@v2
+
+      # - name: Build and push
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: .
+      #     file: ./Dockerfile
+      #     push: true
+      #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/basic_cicd:latest
+
+  create_infra:
+    needs: build_docker_image
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: terraform
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: HashiCorp - Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      - name: Terraform version
+        run: terraform --version
+
+      - name: Create main.tf
+        run: |
+          mv main.model.tf main.tf
+          sed -i "s|<BACKEND_HTTP_ADDRESS>|${{ secrets.BACKEND_HTTP_ADDRESS }}|g" main.tf
+
+      - name: Create terraform.tfvars
+        run: |
+          echo "${{ secrets.PROVIDER_PRIVATE_KEY}}" > provider_private_key_file.pem
+          echo "${{ secrets.COMPUTE_SSH_AUTHORIZED_KEY }}" > compute_ssh_authorized_key_file.pub
+          cat >terraform.tfvars<<EOL
+          PROVIDER_TENANCY_OCID="${{ secrets.PROVIDER_TENANCY_OCID }}"
+          PROVIDER_USER_OCID="${{ secrets.PROVIDER_USER_OCID }}"
+          PROVIDER_PRIVATE_KEY_FILE_PATH="provider_private_key_file.pem"
+          PROVIDER_FINGERPRINT="${{ secrets.PROVIDER_FINGERPRINT }}"
+          PROVIDER_REGION="${{ secrets.PROVIDER_REGION }}"
+          COMPUTE_COMPARTMENT_ID="${{ secrets.COMPUTE_COMPARTMENT_ID }}"
+          COMPUTE_VM_SHAPE="VM.Standard.E2.1.Micro"
+          COMPUTE_SOURCE_ID="${{ secrets.COMPUTE_SOURCE_ID }}"
+          COMPUTE_SOURCE_TYPE="image"
+          COMPUTE_DISPLAY_NAME="ubuntu-with-bucket"
+          COMPUTE_SUBNET_ID="${{ secrets.COMPUTE_SUBNET_ID }}"
+          COMPUTE_INSTANCE="ubuntu-instance"
+          COMPUTE_SSH_PUBLIC_KEY_FILE_PATH="compute_ssh_authorized_key_file.pub"
+          EOL
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan
+
+    #   - name: Terraform Apply
+    #     run: terraform apply -auto-approve
+
+    #   - name: Export Terraform Output
+    #     id: tf
+    #     run: |
+    #       echo "tf_output_public_ip=$(terraform output -raw public-ip-compute-instance)" >> $GITHUB_OUTPUT
+
+    # outputs:
+    #   instance_public_ip: ${{ steps.tf.outputs.tf_output_public_ip }}
+
+  # config_vm_with_ansible:
+  #   needs: create_infra
+  #   runs-on: ubuntu-latest
+
+  #   env:
+  #     PUBLIC_IP: ${{ needs.create_infra.outputs.instance_public_ip }}
+
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-python@v3
+  #       with:
+  #         python-version: '3.x'
+
+  #     - name: Install Ansible
+  #       run: pip install ansible
+
+  #     - name: Create SSH Authorized Key File
+  #       run: |
+  #         echo "${{ secrets.COMPUTE_SSH_AUTHORIZED_KEY }}" > compute_ssh_authorized_key.pem
+  #         chmod 600 compute_ssh_authorized_key.pem
+
+  #     - name: Run Ansible Playbook
+  #       run: ansible-playbook -i $PUBLIC_IP, --user ubuntu --private-key compute_ssh_authorized_key.pem ./ansible/playbook.yml

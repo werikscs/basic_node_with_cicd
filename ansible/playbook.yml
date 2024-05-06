@@ -1,0 +1,19 @@
+---
+- name: Update apt cache
+  hosts: all
+  remote_user: ubuntu
+  become: true
+
+  tasks:
+    - name: update apt cache
+      apt:
+        update_cache: yes
+
+- name: Criando diretorio para a aplicação
+  hosts: all
+  remote_user: ubuntu
+
+  tasks:
+    - name: Create a .txt file with today date
+      ansible.builtin.command:
+        cmd: touch /home/ubuntu/$(date +%Y-%m-%d).txt

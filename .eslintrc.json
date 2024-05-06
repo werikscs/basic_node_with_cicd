@@ -10,7 +10,8 @@
   },
   "plugins": ["prettier"],
   "rules": {
-    "no-console": "off"
+    "no-console": "off",
+    "eslint-plugin-import/prefer-default-export": "off",
   },
   "ignorePatterns": ["/node_modules/", "/dist/"],
   "overrides": []
