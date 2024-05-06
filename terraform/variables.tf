@@ -57,7 +57,7 @@ variable "COMPUTE_INSTANCE" {
   type        = string
 }
 
-variable "COMPUTE_SSH_AUTHORIZED_KEY" {
+variable "COMPUTE_SSH_PUBLIC_KEY_FILE_PATH" {
   description = "ssh authorized keys"
   type        = string
 }

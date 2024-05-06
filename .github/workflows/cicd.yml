@@ -79,12 +79,12 @@ jobs:
 
       - name: Create terraform.tfvars
         run: |
-          echo "${{ secrets.PROVIDER_PRIVATE_KEY}}" > provider_private_key.pem
-          echo "${{ secrets.COMPUTE_SSH_AUTHORIZED_KEY }}" > compute_ssh_authorized_key.pub
+          echo "${{ secrets.PROVIDER_PRIVATE_KEY}}" > provider_private_key_file.pem
+          echo "${{ secrets.COMPUTE_SSH_AUTHORIZED_KEY }}" > compute_ssh_authorized_key_file.pub
           cat >terraform.tfvars<<EOL
           PROVIDER_TENANCY_OCID="${{ secrets.PROVIDER_TENANCY_OCID }}"
           PROVIDER_USER_OCID="${{ secrets.PROVIDER_USER_OCID }}"
-          PROVIDER_PRIVATE_KEY_FILE_PATH="provider_private_key.pem"
+          PROVIDER_PRIVATE_KEY_FILE_PATH="provider_private_key_file.pem"
           PROVIDER_FINGERPRINT="${{ secrets.PROVIDER_FINGERPRINT }}"
           PROVIDER_REGION="${{ secrets.PROVIDER_REGION }}"
           COMPUTE_COMPARTMENT_ID="${{ secrets.COMPUTE_COMPARTMENT_ID }}"
@@ -94,7 +94,7 @@ jobs:
           COMPUTE_DISPLAY_NAME="ubuntu-with-bucket"
           COMPUTE_SUBNET_ID="${{ secrets.COMPUTE_SUBNET_ID }}"
           COMPUTE_INSTANCE="ubuntu-instance"
-          COMPUTE_SSH_AUTHORIZED_KEY="compute_ssh_authorized_key.pub"
+          COMPUTE_SSH_PUBLIC_KEY_PATH="compute_ssh_authorized_key_file.pub"
           EOL
 
       - name: Terraform Init
@@ -106,37 +106,37 @@ jobs:
       - name: Terraform Plan
         run: terraform plan
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
+    #   - name: Terraform Apply
+    #     run: terraform apply -auto-approve
 
-      - name: Export Terraform Output
-        id: tf
-        run: |
-          echo "tf_output_public_ip=$(terraform output -raw public-ip-compute-instance)" >> $GITHUB_OUTPUT
+    #   - name: Export Terraform Output
+    #     id: tf
+    #     run: |
+    #       echo "tf_output_public_ip=$(terraform output -raw public-ip-compute-instance)" >> $GITHUB_OUTPUT
 
-    outputs:
-      instance_public_ip: ${{ steps.tf.outputs.tf_output_public_ip }}
+    # outputs:
+    #   instance_public_ip: ${{ steps.tf.outputs.tf_output_public_ip }}
 
-  config_vm_with_ansible:
-    needs: create_infra
-    runs-on: ubuntu-latest
+  # config_vm_with_ansible:
+  #   needs: create_infra
+  #   runs-on: ubuntu-latest
 
-    env:
-      PUBLIC_IP: ${{ needs.create_infra.outputs.instance_public_ip }}
+  #   env:
+  #     PUBLIC_IP: ${{ needs.create_infra.outputs.instance_public_ip }}
 
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
-        with:
-          python-version: '3.x'
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-python@v3
+  #       with:
+  #         python-version: '3.x'
 
-      - name: Install Ansible
-        run: pip install ansible
+  #     - name: Install Ansible
+  #       run: pip install ansible
 
-      - name: Create SSH Authorized Key File
-        run: |
-          echo "${{ secrets.COMPUTE_SSH_AUTHORIZED_KEY }}" > compute_ssh_authorized_key.pem
-          chmod 600 compute_ssh_authorized_key.pem
+  #     - name: Create SSH Authorized Key File
+  #       run: |
+  #         echo "${{ secrets.COMPUTE_SSH_AUTHORIZED_KEY }}" > compute_ssh_authorized_key.pem
+  #         chmod 600 compute_ssh_authorized_key.pem
 
-      - name: Run Ansible Playbook
-        run: ansible-playbook -i $PUBLIC_IP, --user ubuntu --private-key compute_ssh_authorized_key.pem ./ansible/playbook.yml
+  #     - name: Run Ansible Playbook
+  #       run: ansible-playbook -i $PUBLIC_IP, --user ubuntu --private-key compute_ssh_authorized_key.pem ./ansible/playbook.yml
