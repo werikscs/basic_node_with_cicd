@@ -94,7 +94,7 @@ jobs:
           COMPUTE_DISPLAY_NAME="ubuntu-with-bucket"
           COMPUTE_SUBNET_ID="${{ secrets.COMPUTE_SUBNET_ID }}"
           COMPUTE_INSTANCE="ubuntu-instance"
-          COMPUTE_SSH_PUBLIC_KEY_PATH="compute_ssh_authorized_key_file.pub"
+          COMPUTE_SSH_PUBLIC_KEY_FILE_PATH="compute_ssh_authorized_key_file.pub"
           EOL
 
       - name: Terraform Init
