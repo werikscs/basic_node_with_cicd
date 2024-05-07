@@ -1,14 +1,6 @@
 name: CICD Pipeline
 
-on:
-  push:
-    branches:
-      - 'development'
-      - 'main'
-  pull_request:
-    branches:
-      - 'development'
-      - 'main'
+on: [push, pull_request]
 
 jobs:
   run_tests:
@@ -31,29 +23,35 @@ jobs:
   build_docker_image:
     needs: run_tests
 
-    if: github.ref == 'refs/heads/development'
+    if: github.ref == 'refs/heads/development' && github.event_name == 'push'
 
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
-      # - name: Login to Docker Hub
-      #   uses: docker/login-action@v3
-      #   with:
-      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
-      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # - name: Set up Docker Buildx (DOCKER CLI plugin)
-      #   uses: docker/setup-buildx-action@v2
+      - name: Set up Docker Buildx (DOCKER CLI plugin)
+        uses: docker/setup-buildx-action@v2
 
-      # - name: Build and push
-      #   uses: docker/build-push-action@v4
-      #   with:
-      #     context: .
-      #     file: ./Dockerfile
-      #     push: true
-      #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/basic_cicd:latest
+      - name: Set current date as env variable
+        run: echo "NOW=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+
+      - name: Echo current date
+        run: echo $NOW
+
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/basic_cicd:dev_$NOW
 
   create_infra:
     needs: build_docker_image
@@ -106,8 +104,10 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        if: github.event_name == 'pull_request'
         run: terraform plan
+
+      - name: Print date
+        run: echo $NOW
 
     #   - name: Terraform Apply
     #     run: terraform apply -auto-approve
