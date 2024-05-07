@@ -1,12 +1,6 @@
 name: CICD Pipeline
 
-on:
-  push:
-    branches:
-      - 'development'
-  pull_request:
-    branches:
-      - 'development'
+on: [push, pull_request]
 
 jobs:
   run_tests:
@@ -29,7 +23,7 @@ jobs:
   build_docker_image:
     needs: run_tests
 
-    if: github.event_name == 'push'
+    if: github.ref == 'refs/heads/development' && github.event_name == 'push'
 
     runs-on: ubuntu-latest
 
