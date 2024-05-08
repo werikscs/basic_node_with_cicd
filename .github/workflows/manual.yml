@@ -1,10 +1,11 @@
 name: Manual Trigger Workflow with username
 # get username information
 on:
-  workflow_dispatch:
+  push:
     branches:
       - development
 
+  workflow_dispatch:
     inputs:
       username:
         description: 'select user'
