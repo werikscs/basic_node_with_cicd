@@ -1,4 +1,4 @@
-name: Manual Trigger Workflow with username
+name: Example - Manual Trigger Workflow with username
 # get username information
 on:
   workflow_dispatch:
