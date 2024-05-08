@@ -39,12 +39,6 @@ jobs:
       - name: Set up Docker Buildx (DOCKER CLI plugin)
         uses: docker/setup-buildx-action@v2
 
-      - name: Set current date as env variable
-        run: echo "NOW=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
-
-      - name: Echo current date
-        run: echo $NOW
-
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
@@ -105,9 +99,6 @@ jobs:
 
       - name: Terraform Plan
         run: terraform plan
-
-      - name: Print date
-        run: echo $NOW
 
     #   - name: Terraform Apply
     #     run: terraform apply -auto-approve
