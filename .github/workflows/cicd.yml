@@ -51,7 +51,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/basic_cicd:dev_"$NOW"
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/basic_cicd:dev_${{ github.sha }}
 
   create_infra:
     needs: build_docker_image
