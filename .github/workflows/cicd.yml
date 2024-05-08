@@ -4,6 +4,8 @@ on: [push, pull_request]
 
 jobs:
   run_tests:
+    if: github.event_name == 'push'
+
     runs-on: ubuntu-latest
 
     steps:
