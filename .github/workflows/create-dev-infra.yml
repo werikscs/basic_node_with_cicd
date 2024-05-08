@@ -62,5 +62,17 @@ jobs:
       - name: Terraform Plan
         run: terraform plan
 
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/development'
+        run: terraform apply -auto-approve
+
+      - name: Export Terraform Output
+        id: tf
+        run: |
+          echo "tf_output_public_ip=$(terraform output -raw public-ip-compute-instance)" >> $GITHUB_OUTPUT
+
+      - name: Print IP
+        run: echo ${{ steps.tf.outputs.tf_output_public_ip }}
+
       - name: Print Docker Image Tag
-        run: echo The Docker Image Tag is ${{ inputs.docker-image-tag }}
+        run: echo ${{ inputs.docker-image-tag }}
