@@ -49,58 +49,58 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/basic_cicd:dev_${{ github.sha }}
 
-  create_infra:
-    needs: build_docker_image
-    runs-on: ubuntu-latest
+  # create_infra:
+  #   needs: build_docker_image
+  #   runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: terraform
+  #   defaults:
+  #     run:
+  #       working-directory: terraform
 
-    steps:
-      - uses: actions/checkout@v3
+  #   steps:
+  #     - uses: actions/checkout@v3
 
-      - name: HashiCorp - Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_wrapper: false
+  #     - name: HashiCorp - Setup Terraform
+  #       uses: hashicorp/setup-terraform@v3
+  #       with:
+  #         terraform_wrapper: false
 
-      - name: Terraform version
-        run: terraform --version
+  #     - name: Terraform version
+  #       run: terraform --version
 
-      - name: Create main.tf
-        run: |
-          mv main.model.tf main.tf
-          sed -i "s|<BACKEND_HTTP_ADDRESS>|${{ secrets.BACKEND_HTTP_ADDRESS }}|g" main.tf
+  #     - name: Create main.tf
+  #       run: |
+  #         mv main.model.tf main.tf
+  #         sed -i "s|<BACKEND_HTTP_ADDRESS>|${{ secrets.BACKEND_HTTP_ADDRESS }}|g" main.tf
 
-      - name: Create terraform.tfvars
-        run: |
-          echo "${{ secrets.PROVIDER_PRIVATE_KEY}}" > provider_private_key_file.pem
-          echo "${{ secrets.COMPUTE_SSH_AUTHORIZED_KEY }}" > compute_ssh_authorized_key_file.pub
-          cat >terraform.tfvars<<EOL
-          PROVIDER_TENANCY_OCID="${{ secrets.PROVIDER_TENANCY_OCID }}"
-          PROVIDER_USER_OCID="${{ secrets.PROVIDER_USER_OCID }}"
-          PROVIDER_PRIVATE_KEY_FILE_PATH="provider_private_key_file.pem"
-          PROVIDER_FINGERPRINT="${{ secrets.PROVIDER_FINGERPRINT }}"
-          PROVIDER_REGION="${{ secrets.PROVIDER_REGION }}"
-          COMPUTE_COMPARTMENT_ID="${{ secrets.COMPUTE_COMPARTMENT_ID }}"
-          COMPUTE_VM_SHAPE="VM.Standard.E2.1.Micro"
-          COMPUTE_SOURCE_ID="${{ secrets.COMPUTE_SOURCE_ID }}"
-          COMPUTE_SOURCE_TYPE="image"
-          COMPUTE_DISPLAY_NAME="ubuntu-with-bucket"
-          COMPUTE_SUBNET_ID="${{ secrets.COMPUTE_SUBNET_ID }}"
-          COMPUTE_INSTANCE="ubuntu-instance"
-          COMPUTE_SSH_PUBLIC_KEY_FILE_PATH="compute_ssh_authorized_key_file.pub"
-          EOL
+  #     - name: Create terraform.tfvars
+  #       run: |
+  #         echo "${{ secrets.PROVIDER_PRIVATE_KEY}}" > provider_private_key_file.pem
+  #         echo "${{ secrets.COMPUTE_SSH_AUTHORIZED_KEY }}" > compute_ssh_authorized_key_file.pub
+  #         cat >terraform.tfvars<<EOL
+  #         PROVIDER_TENANCY_OCID="${{ secrets.PROVIDER_TENANCY_OCID }}"
+  #         PROVIDER_USER_OCID="${{ secrets.PROVIDER_USER_OCID }}"
+  #         PROVIDER_PRIVATE_KEY_FILE_PATH="provider_private_key_file.pem"
+  #         PROVIDER_FINGERPRINT="${{ secrets.PROVIDER_FINGERPRINT }}"
+  #         PROVIDER_REGION="${{ secrets.PROVIDER_REGION }}"
+  #         COMPUTE_COMPARTMENT_ID="${{ secrets.COMPUTE_COMPARTMENT_ID }}"
+  #         COMPUTE_VM_SHAPE="VM.Standard.E2.1.Micro"
+  #         COMPUTE_SOURCE_ID="${{ secrets.COMPUTE_SOURCE_ID }}"
+  #         COMPUTE_SOURCE_TYPE="image"
+  #         COMPUTE_DISPLAY_NAME="ubuntu-with-bucket"
+  #         COMPUTE_SUBNET_ID="${{ secrets.COMPUTE_SUBNET_ID }}"
+  #         COMPUTE_INSTANCE="ubuntu-instance"
+  #         COMPUTE_SSH_PUBLIC_KEY_FILE_PATH="compute_ssh_authorized_key_file.pub"
+  #         EOL
 
-      - name: Terraform Init
-        run: terraform init
+  #     - name: Terraform Init
+  #       run: terraform init
 
-      - name: Terraform Validate
-        run: terraform validate
+  #     - name: Terraform Validate
+  #       run: terraform validate
 
-      - name: Terraform Plan
-        run: terraform plan
+  #     - name: Terraform Plan
+  #       run: terraform plan
 
     #   - name: Terraform Apply
     #     run: terraform apply -auto-approve
