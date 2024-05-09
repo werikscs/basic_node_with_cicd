@@ -1,0 +1,33 @@
+name: Config VM using Ansible
+
+on:
+  workflow_dispatch:
+    inputs:
+      instance_public_ip:
+        description: 'Instance Public IP'
+        required: true
+        default: ''
+
+jobs:
+  config_vm_with_ansible:
+    runs-on: ubuntu-latest
+
+    env:
+      PUBLIC_IP: ${{ inputs.instance_public_ip }}
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+        with:
+          python-version: '3.x'
+
+      - name: Install Ansible
+        run: pip install ansible
+
+      - name: Create SSH Authorized Key File
+        run: |
+          echo "${{ secrets.COMPUTE_SSH_AUTHORIZED_PRIVATE_KEY }}" > compute_ssh_authorized_private_key.pem
+          chmod 600 compute_ssh_authorized_key.pem
+
+      - name: Run Ansible Playbook
+        run: ansible-playbook -i $PUBLIC_IP, --user ubuntu --private-key compute_ssh_authorized_private_key.pem ./ansible/playbook.yml

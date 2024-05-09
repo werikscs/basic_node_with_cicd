@@ -4,7 +4,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  create_infra:
+  destroy_infra:
+    if: github.ref == 'refs/heads/development'
+
     runs-on: ubuntu-latest
 
     defaults:
@@ -57,5 +59,4 @@ jobs:
         run: terraform plan
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/development'
         run: terraform destroy -auto-approve
