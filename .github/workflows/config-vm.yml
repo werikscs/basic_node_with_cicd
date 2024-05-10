@@ -14,6 +14,7 @@ jobs:
 
     env:
       PUBLIC_IP: ${{ inputs.instance_public_ip }}
+      ANSIBLE_HOST_KEY_CHECKING: false
 
     steps:
       - uses: actions/checkout@v3
