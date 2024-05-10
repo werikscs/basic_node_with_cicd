@@ -2,12 +2,6 @@ name: Create DEV Infra
 
 on:
   workflow_dispatch:
-    inputs:
-      docker-image-tag:
-        description: 'dev_sha (ex: dev_6h45jg8j8g4)'
-        default: ''
-        required: true
-        type: string
 
 jobs:
   create_infra:
