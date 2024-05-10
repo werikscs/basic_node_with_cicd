@@ -77,6 +77,21 @@
         name: '{{ image_name }}'
         source: pull
 
+- name: Config .env file
+  hosts: all
+  remote_user: ubuntu
+  become: true
+
+  vars:
+    node_env: "{{ lookup('env', 'NODE_ENV') }}"
+
+  tasks:
+    - name: Create a .env file
+      copy:
+        dest: '/home/ubuntu/app/.env'
+        content: |
+          NODE_ENV = {{ node_env }}
+
 - name: Copy docker-compose.yml file
   hosts: all
   remote_user: ubuntu

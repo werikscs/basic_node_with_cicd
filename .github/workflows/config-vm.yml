@@ -4,12 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       instance_public_ip:
+        required: true
         description: 'Instance Public IP'
-        required: true
         default: ''
-      image_name:
-        description: 'Docker Image Name'
+      environment:
         required: true
+        type: choice
+        description: 'Environment'
+        options:
+          - development
+          - production
+      image_name:
+        required: true
+        description: 'Docker Image Name'
         default: ''
 
 jobs:
@@ -22,6 +29,7 @@ jobs:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
       IMAGE_NAME: ${{ inputs.image_name }}
+      NODE_ENV: ${{ inputs.environment }}
 
     steps:
       - uses: actions/checkout@v3
