@@ -80,6 +80,7 @@
 - name: Copy docker-compose.yml file
   hosts: all
   remote_user: ubuntu
+  become: true
 
   tasks:
     - name: coping
@@ -91,6 +92,7 @@
 - name: Update docker-compose.yml image name in file
   hosts: all
   remote_user: ubuntu
+  become: true
 
   tasks:
     - name: Update image name in docker-compose.yml
