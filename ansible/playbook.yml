@@ -98,3 +98,4 @@
         path: /home/ubuntu/app/docker-compose.yml
         regexp: "<IMAGE_NAME>"
         replace: "{{ lookup('env', 'IMAGE_NAME') }}"
+        mode: '0755'
