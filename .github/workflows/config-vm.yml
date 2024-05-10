@@ -33,6 +33,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions/setup-python@v3
         with:
           python-version: '3.x'
@@ -45,5 +46,10 @@ jobs:
           echo "${{ secrets.COMPUTE_SSH_AUTHORIZED_PRIVATE_KEY }}" > compute_ssh_authorized_private_key.pem
           chmod 600 compute_ssh_authorized_private_key.pem
 
-      - name: Run Ansible Playbook
+      - name: Run Prod Ansible Playbook
+        if: ${{ inputs.environment == 'production' }}
         run: ansible-playbook -i $PUBLIC_IP, --user ubuntu --private-key compute_ssh_authorized_private_key.pem ./ansible/playbook.yml
+
+      - name: Run Dev Ansible Playbook
+        if: ${{ inputs.environment == 'development' }}
+        run: ansible-playbook -i $PUBLIC_IP, --user ubuntu --private-key compute_ssh_authorized_private_key.pem ./ansible/playbook-dev.yml
