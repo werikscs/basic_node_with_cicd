@@ -4,8 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - development
-      - main
+      - '*'
 
 jobs:
   run_tests:
@@ -28,7 +27,7 @@ jobs:
   build_docker_image:
     needs: run_tests
 
-    if: github.ref == 'refs/heads/development' || github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/development' || github.ref == 'refs/heads/main')
 
     runs-on: ubuntu-latest
 
