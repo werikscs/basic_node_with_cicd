@@ -99,3 +99,12 @@
         path: /home/ubuntu/app/docker-compose.yml
         regexp: '<IMAGE_NAME>'
         replace: "{{ lookup('env', 'IMAGE_NAME') }}"
+
+- name: Execute docker-compose
+  hosts: all
+  remote_user: ubuntu
+  become: true
+
+  tasks:
+    - name: Execute docker-compose
+      shell: docker-compose -f /home/ubuntu/app/docker-compose.yml up -d
