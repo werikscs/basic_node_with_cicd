@@ -1,7 +1,7 @@
 version: '3.9'
 
 services:
-  community-spells:
+  backend:
     image: <IMAGE_NAME>
     restart: always
     ports:
