@@ -11,6 +11,8 @@ on:
 
 jobs:
   create_infra:
+    if: github.ref == 'refs/heads/development'
+
     runs-on: ubuntu-latest
 
     defaults:
@@ -63,7 +65,6 @@ jobs:
         run: terraform plan
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/development'
         run: terraform apply -auto-approve
 
       - name: Export Terraform Output
@@ -73,6 +74,3 @@ jobs:
 
       - name: Print IP
         run: echo ${{ steps.tf.outputs.tf_output_public_ip }}
-
-      - name: Print Docker Image Tag
-        run: echo ${{ inputs.docker-image-tag }}
