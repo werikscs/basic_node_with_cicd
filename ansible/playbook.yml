@@ -88,7 +88,7 @@
   tasks:
     - name: Create a .env file
       copy:
-        dest: '/home/ubuntu/app/.env'
+        dest: '/home/ubuntu/app/.env.prod'
         content: |
           NODE_ENV = {{ node_env }}
 
