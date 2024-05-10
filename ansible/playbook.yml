@@ -87,7 +87,6 @@
       ansible.builtin.copy:
         src: ./../docker-compose.yml
         dest: /home/ubuntu/app/docker-compose.yml
-        mode: '1000'
 
 - name: Update docker-compose.yml image name in file
   hosts: all
@@ -98,6 +97,5 @@
     - name: Update image name in docker-compose.yml
       replace:
         path: /home/ubuntu/app/docker-compose.yml
-        regexp: "<IMAGE_NAME>"
+        regexp: '<IMAGE_NAME>'
         replace: "{{ lookup('env', 'IMAGE_NAME') }}"
-        mode: '0755'
