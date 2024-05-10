@@ -50,5 +50,5 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      - name: Terraform Output
-        run: terraform output
+      - name: Terraform State List
+        run: terraform state list ubuntu-instance
