@@ -1,6 +1,11 @@
 name: Run Tests and Create Docker Image
 
-on: [push]
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - development
+      - main
 
 jobs:
   run_tests:
