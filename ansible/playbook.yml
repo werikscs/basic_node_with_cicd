@@ -5,15 +5,74 @@
   become: true
 
   tasks:
-    - name: update apt cache
+    - name: Update apt cache
       apt:
-        update_cache: yes
+        update_cache: true
 
-- name: Criando diretorio para a aplicação
+- name: Create App Directory
   hosts: all
   remote_user: ubuntu
 
   tasks:
-    - name: Create a .txt file with today date
-      ansible.builtin.command:
-        cmd: touch /home/ubuntu/$(date +%Y-%m-%d).txt
+    - name: Create a directory if it does not exist
+      file:
+        path: /home/ubuntu/app
+        state: directory
+        mode: '0755'
+
+- name: Install Docker and Docker Compose
+  hosts: all
+  remote_user: ubuntu
+  become: true
+
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Add user to docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: true
+
+    - name: Install Docker Compose
+      apt:
+        name: docker-compose
+        state: present
+
+- name: Fazendo login na dockerhub
+  hosts: all
+  remote_user: ubuntu
+  become: true
+
+  vars:
+    username: "{{ lookup('env', 'DOCKERHUB_USERNAME') }}"
+    password: "{{ lookup('env', 'DOCKERHUB_TOKEN') }}"
+
+  tasks:
+    - name: Log in DockerHub
+      community.docker.docker_login:
+        username: '{{ username }}'
+        password: '{{ password }}'
+
+- name: Download container image
+  hosts: all
+  remote_user: ubuntu
+  become: true
+
+  vars:
+    image_name: "{{ lookup('env', 'IMAGE_NAME') }}"
+
+  tasks:
+    - name: Pull the image
+      community.docker.docker_image:
+        name: '{{ image_name }}'
+        source: pull

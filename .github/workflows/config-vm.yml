@@ -7,6 +7,10 @@ on:
         description: 'Instance Public IP'
         required: true
         default: ''
+      image_name:
+        description: 'Docker Image Name'
+        required: true
+        default: ''
 
 jobs:
   config_vm_with_ansible:
@@ -15,6 +19,9 @@ jobs:
     env:
       PUBLIC_IP: ${{ inputs.instance_public_ip }}
       ANSIBLE_HOST_KEY_CHECKING: false
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      IMAGE_NAME: ${{ inputs.image_name }}
 
     steps:
       - uses: actions/checkout@v3
