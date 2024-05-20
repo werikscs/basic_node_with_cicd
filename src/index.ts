@@ -7,7 +7,7 @@ const environmentMsg =
   process.env.NODE_ENV === 'production' ? 'Production' : 'Development'
 
 app.get('/', (req, res) => {
-  res.send(`Hello World, from ${environmentMsg}!`)
+  res.send(`Hello, World! Welcome to the ${environmentMsg} environment!`)
 })
 
 app.listen(port, () => {
