@@ -48,8 +48,8 @@ jobs:
 
       - name: Run Prod Ansible Playbook
         if: ${{ inputs.environment == 'production' }}
-        run: ansible-playbook -i $PUBLIC_IP, --user ubuntu --private-key compute_ssh_authorized_private_key.pem ./ansible/playbook.yml
+        run: ansible-playbook -v -i $PUBLIC_IP, --user ubuntu --private-key compute_ssh_authorized_private_key.pem ./ansible/playbook.yml
 
       - name: Run Dev Ansible Playbook
         if: ${{ inputs.environment == 'development' }}
-        run: ansible-playbook -i $PUBLIC_IP, --user ubuntu --private-key compute_ssh_authorized_private_key.pem ./ansible/playbook-dev.yml
+        run: ansible-playbook -v -i $PUBLIC_IP, --user ubuntu --private-key compute_ssh_authorized_private_key.pem ./ansible/playbook-dev.yml
