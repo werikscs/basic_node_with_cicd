@@ -16,7 +16,7 @@
   tasks:
     - name: Create a directory if it does not exist
       file:
-        path: /home/ubuntu/app
+        path: /home/ubuntu/backend_prod
         state: directory
         mode: '0755'
 
@@ -88,7 +88,7 @@
   tasks:
     - name: Create a .env file
       copy:
-        dest: '/home/ubuntu/app/.env.prod'
+        dest: '/home/ubuntu/backend_prod/.env.prod'
         content: |
           NODE_ENV = {{ node_env }}
 
@@ -101,7 +101,7 @@
     - name: coping
       ansible.builtin.copy:
         src: ./../docker-compose.yml
-        dest: /home/ubuntu/app/docker-compose.yml
+        dest: /home/ubuntu/backend_prod/docker-compose.yml
 
 - name: Update docker-compose.yml image name in file
   hosts: all
@@ -111,7 +111,7 @@
   tasks:
     - name: Update image name in docker-compose.yml
       replace:
-        path: /home/ubuntu/app/docker-compose.yml
+        path: /home/ubuntu/backend_prod/docker-compose.yml
         regexp: '<IMAGE_NAME>'
         replace: "{{ lookup('env', 'IMAGE_NAME') }}"
 
@@ -122,4 +122,4 @@
 
   tasks:
     - name: Execute docker-compose
-      shell: docker-compose -f /home/ubuntu/app/docker-compose.yml up -d
+      shell: docker-compose -f /home/ubuntu/backend_prod/docker-compose.yml up -d
