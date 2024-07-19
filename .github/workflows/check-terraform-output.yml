@@ -2,6 +2,9 @@ name: Check Terraform Output
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - '*'
 
 jobs:
   check_terraform_status:
