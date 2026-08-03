@@ -2,6 +2,9 @@ name: Check Terraform Output
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - '*'
 
 jobs:
   check_terraform_status:
@@ -49,6 +52,9 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
+      
+      - name: Terraform State List
+        run: terraform state list
 
       - name: Terraform State Show Resource
         run: terraform state show oci_core_instance.ubuntu_instance
