@@ -9,7 +9,10 @@ infrastructure, the delivery and the separation between them.
 
 Built as a generalization of the pipeline from my undergraduate thesis,
 [Automated CI/CD in a REST API: a case study](https://bd.centro.iff.edu.br/jspui/bitstream/123456789/4685/1/Texto.pdf)
-(in Portuguese), so I could reuse the setup on other projects.
+(in Portuguese), so I could reuse the setup on other projects. The original pipeline lives in
+[community-spell-backend](https://github.com/tcc-processo-entrega-automatizada/community-spell-backend) —
+there the infrastructure is destroyed and recreated on every delivery, instead of living in its own
+manual workflow as it does here.
 
 ---
 
